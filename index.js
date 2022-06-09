@@ -4,16 +4,14 @@ const morgan = require('morgan')
 const cors = require('cors')
 const app = express()
 
-app.use(cors())
-
-app.use(express.json())
-
 morgan.token('reqbody', (req, res) => JSON.stringify(req.body))
 
+app.use(cors())
+app.use(express.json())
+app.use(express.static('build'))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :reqbody', {
     skip: function (req, res) { return req.method !== "POST" }
 }))
-
 app.use(morgan('tiny', {
     skip: function (req, res) { return req.method === "POST" }
   }))
